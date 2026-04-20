@@ -22,6 +22,7 @@ public class cau1Fragment extends Fragment {
     EditText edtSoMet2;
     EditText edtChuVi;
     EditText edtDienTich;
+    Button btnTinhToan;
 
     public cau1Fragment() {
         // Required empty public constructor
@@ -47,28 +48,45 @@ public class cau1Fragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View viewCau1 = inflater.inflate(R.layout.fragment_cau1, container, false);
-        //tìm đk trong view này
+
+
         edtSoMet1 = viewCau1.findViewById(R.id.edtSoMet1);
         edtSoMet2 = viewCau1.findViewById(R.id.edtSoMet2);
         edtChuVi = viewCau1.findViewById(R.id.edtChuVi);
         edtDienTich = viewCau1.findViewById(R.id.edtDienTich);
-        edtDienTich.setOnClickListener(new View.OnClickListener() {
+
+
+        btnTinhToan = viewCau1.findViewById(R.id.btnTinhToan);
+
+
+        btnTinhToan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String duLieusoMet1 = edtSoMet1.getText().toString();
-                String duLieusoMet2 = edtSoMet2.getText().toString();
-                if (!duLieusoMet1.isEmpty())
-                {
-                    Toast.makeText(viewCau1.getContext(), "chu vi hình chữ nhật", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
-                    Toast.makeText(viewCau1.getContext(), "diện tích hình chữ nhật", Toast.LENGTH_SHORT).show();
+
+                String duLieusoMet1 = edtSoMet1.getText().toString().trim();
+                String duLieusoMet2 = edtSoMet2.getText().toString().trim();
+
+                if (!duLieusoMet1.isEmpty() && !duLieusoMet2.isEmpty()) {
+                    try {
+                        double canh1 = Double.parseDouble(duLieusoMet1);
+                        double canh2 = Double.parseDouble(duLieusoMet2);
+
+                        double chuVi = (canh1 + canh2) * 2;
+                        double dienTich = canh1 * canh2;
+
+                        edtChuVi.setText(String.valueOf(chuVi));
+                        edtDienTich.setText(String.valueOf(dienTich));
+
+                        Toast.makeText(viewCau1.getContext(), "Tính toán thành công!", Toast.LENGTH_SHORT).show();
+
+                    } catch (NumberFormatException e) {
+                        Toast.makeText(viewCau1.getContext(), "Vui lòng chỉ nhập số!", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    Toast.makeText(viewCau1.getContext(), "Vui lòng nhập đủ chiều dài và chiều rộng!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
-
 
         return viewCau1;
     }
